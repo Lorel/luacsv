@@ -58,18 +58,18 @@ static int convert_csv_line(lua_State *L, int idx, char delim)
         lua_rawgeti(L,idx,i);
         str = lua_tostring(L,-1);
         if (strchr(str,delim) || strchr(str,QUOTE)) { // wd strcspn be much faster?
-            luaL_putchar(&b,QUOTE);
+            luaL_addchar(&b,QUOTE);
             for (; *str; ++str) {
-                luaL_putchar(&b,*str);
+                luaL_addchar(&b,*str);
                 if (*str == QUOTE)
-                    luaL_putchar(&b,QUOTE);
+                    luaL_addchar(&b,QUOTE);
             }
-            luaL_putchar(&b,QUOTE);
+            luaL_addchar(&b,QUOTE);
         } else {
             luaL_addstring(&b,str);
         }
         if (i != n)
-            luaL_putchar(&b,delim);
+            luaL_addchar(&b,delim);
     }
     luaL_pushresult(&b);
     return 1;
