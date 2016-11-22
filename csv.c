@@ -346,26 +346,26 @@ static int l_index(lua_State *L) {
     return 1;
 }
 
-static const luaL_reg csv_array[] = {
+static const luaL_Reg csv_array[] = {
     {"copy",l_copy},
     {"index",l_index},
     {NULL,NULL},
 };
 
-static const luaL_reg csv_reader[] = {
+static const luaL_Reg csv_reader[] = {
     {"read",l_read},
     {"rows",l_rows},
     {"close",l_close},
     {NULL,NULL},
 };
 
-static const luaL_reg csv_writer[] = {
+static const luaL_Reg csv_writer[] = {
     {"write",l_write},
     {"close",l_close},
     {NULL,NULL},
 };
 
-static const luaL_reg csv[] = {
+static const luaL_Reg csv[] = {
     {"reader",l_reader},
     {"writer",l_writer},
     {"parse",l_parse},
@@ -373,7 +373,7 @@ static const luaL_reg csv[] = {
     {NULL,NULL}
 };
 
-static void createmeta(lua_State *L,const char *name, const luaL_reg *methods) {
+static void createmeta(lua_State *L,const char *name, const luaL_Reg *methods) {
     luaL_newmetatable(L,name);
     lua_pushvalue(L, -1);  /* push metatable */
     lua_setfield(L, -2, "__index");  /* metatable.__index = metatable */
