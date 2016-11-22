@@ -320,7 +320,7 @@ static int l_close(lua_State *L) {
 
 static int l_copy(lua_State *L) {
     // the table is at 1
-    int i,n = lua_objlen(L,1);
+    int i,n = lua_rawlen(L,1);
     lua_createtable(L,n,0); // our new table
     for (i = 1; i<=n; i++) {
         lua_rawgeti(L,1,i);
