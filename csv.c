@@ -391,6 +391,7 @@ int EXPORT luaopen_csv(lua_State *L)
     createmeta(L,CSV_META_READER,csv_reader);
     createmeta(L,CSV_META_WRITER,csv_writer);
     createmeta(L,CSV_META_ARRAY,csv_array);
-    luaL_openlib (L, "csv", csv, 0);
+    luaL_setfuncs(L, csv, 0);
+    lua_setglobal(L, "csv");
     return 1;
 }
