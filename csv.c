@@ -52,24 +52,24 @@ static int convert_csv_line(lua_State *L, int idx, char delim)
 {
     luaL_Buffer b;
     const char *str;
-    int i,n = lua_objlen(L,idx);
+    int i,n = lua_rawlen(L,idx);
     luaL_buffinit(L,&b);
     for (i = 1; i <= n; i++) {
         lua_rawgeti(L,idx,i);
         str = lua_tostring(L,-1);
         if (strchr(str,delim) || strchr(str,QUOTE)) { // wd strcspn be much faster?
-            luaL_putchar(&b,QUOTE);
+            luaL_addchar(&b,QUOTE);
             for (; *str; ++str) {
-                luaL_putchar(&b,*str);
+                luaL_addchar(&b,*str);
                 if (*str == QUOTE)
-                    luaL_putchar(&b,QUOTE);
+                    luaL_addchar(&b,QUOTE);
             }
-            luaL_putchar(&b,QUOTE);
+            luaL_addchar(&b,QUOTE);
         } else {
             luaL_addstring(&b,str);
         }
         if (i != n)
-            luaL_putchar(&b,delim);
+            luaL_addchar(&b,delim);
     }
     luaL_pushresult(&b);
     return 1;
@@ -320,7 +320,7 @@ static int l_close(lua_State *L) {
 
 static int l_copy(lua_State *L) {
     // the table is at 1
-    int i,n = lua_objlen(L,1);
+    int i,n = lua_rawlen(L,1);
     lua_createtable(L,n,0); // our new table
     for (i = 1; i<=n; i++) {
         lua_rawgeti(L,1,i);
@@ -377,7 +377,7 @@ static void createmeta(lua_State *L,const char *name, const luaL_Reg *methods) {
     luaL_newmetatable(L,name);
     lua_pushvalue(L, -1);  /* push metatable */
     lua_setfield(L, -2, "__index");  /* metatable.__index = metatable */
-    luaL_register(L, NULL, methods);
+    luaL_setfuncs(L, methods, 0);
 }
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -391,6 +391,7 @@ int EXPORT luaopen_csv(lua_State *L)
     createmeta(L,CSV_META_READER,csv_reader);
     createmeta(L,CSV_META_WRITER,csv_writer);
     createmeta(L,CSV_META_ARRAY,csv_array);
-    luaL_openlib (L, "csv", csv, 0);
+    luaL_setfuncs(L, csv, 0);
+    lua_setglobal(L, "csv");
     return 1;
 }
