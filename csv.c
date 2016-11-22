@@ -377,7 +377,7 @@ static void createmeta(lua_State *L,const char *name, const luaL_Reg *methods) {
     luaL_newmetatable(L,name);
     lua_pushvalue(L, -1);  /* push metatable */
     lua_setfield(L, -2, "__index");  /* metatable.__index = metatable */
-    luaL_register(L, NULL, methods);
+    luaL_setfuncs(L, methods, 0);
 }
 
 #if defined(_WIN32) || defined(_WIN64)
