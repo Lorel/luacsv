@@ -52,7 +52,7 @@ static int convert_csv_line(lua_State *L, int idx, char delim)
 {
     luaL_Buffer b;
     const char *str;
-    int i,n = lua_objlen(L,idx);
+    int i,n = lua_rawlen(L,idx);
     luaL_buffinit(L,&b);
     for (i = 1; i <= n; i++) {
         lua_rawgeti(L,idx,i);
